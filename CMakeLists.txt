@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(Nanomites)
+set(CMAKE_CXX_STANDARD 20)
+add_executable(Nanomites main.cpp)
+target_compile_options(Nanomites PRIVATE "/O2" "/Ob2" "/GS-" "/EHs-c-")
