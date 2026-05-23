@@ -30,3 +30,5 @@ static const unsigned char G_ENC_FAKE[] = {
     0x40, 0x09, 0x0E, 0x34, 0x3E
 };
 
+// on declare le pointeur de fonction pour ntdll
+typedef NTSTATUS(WINAPI* pNtQueryInformationProcess)(HANDLE, PROCESSINFOCLASS, PVOID, ULONG, PULONG);
