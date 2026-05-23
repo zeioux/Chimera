@@ -32,3 +32,23 @@ static const unsigned char G_ENC_FAKE[] = {
 
 // on declare le pointeur de fonction pour ntdll
 typedef NTSTATUS(WINAPI* pNtQueryInformationProcess)(HANDLE, PROCESSINFOCLASS, PVOID, ULONG, PULONG);
+
+bool check_debug() {
+    // check le debug port, flm de check le PEB a la main
+    HMODULE hNtDll = GetModuleHandleA("ntdll.dll");
+    if (!hNtDll) return false;
+
+    pNtQueryInformationProcess NtQueryInfo = (pNtQueryInformationProcess)GetProcAddress(hNtDll, "NtQueryInformationProcess");
+    if (!NtQueryInfo) return false;
+
+    DWORD debugPort = 0;
+    // 7 = ProcessDebugPort
+    NTSTATUS status = NtQueryInfo(GetCurrentProcess(), (PROCESSINFOCLASS)7, &debugPort, sizeof(debugPort), NULL);
+
+    // si status OK et port != 0, c cramé
+    if (status == 0x00000000 && debugPort != 0) {
+        return true;
+    }
+    return false;
+}
+
